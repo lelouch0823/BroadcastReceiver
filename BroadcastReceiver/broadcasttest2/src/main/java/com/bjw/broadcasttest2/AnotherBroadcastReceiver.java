@@ -13,5 +13,6 @@ public class AnotherBroadcastReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Toast.makeText(context, "received from AnotherBroadcastReceiver", Toast.LENGTH_SHORT).show();
         abortBroadcast();
+
     }
 }
