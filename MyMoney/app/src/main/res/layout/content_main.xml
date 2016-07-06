@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="bjw.com.mymoney.MainActivity"
+    tools:showIn="@layout/activity_main"
+    android:id="@+id/mail">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="我的钱有会随按按钮改变哦,现在我有0元."
+        android:id="@+id/textView"
+        android:layout_marginTop="42dp"
+        android:layout_below="@+id/myET"
+        android:layout_centerHorizontal="true"
+        android:hint="请输入初始金额"/>
+    <Button
+        android:background="#003cff"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="按一次加100元"
+        android:id="@+id/addButton"
+        android:layout_below="@+id/cutButton"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="33dp" />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="按一次减100元"
+        android:id="@+id/cutButton"
+        android:layout_marginTop="46dp"
+        android:layout_below="@+id/textView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/finish"
+        android:text="进入销毁模式"
+        android:layout_below="@+id/addButton"
+        android:layout_alignLeft="@+id/textView"
+        android:layout_alignStart="@+id/textView"
+        android:layout_alignRight="@+id/textView"
+        android:layout_alignEnd="@+id/textView" />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="第三界面"
+        android:id="@+id/sb1"
+        android:layout_below="@+id/bow"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="打开浏览器"
+        android:id="@+id/bow"
+        android:layout_below="@+id/finish"
+        android:layout_centerHorizontal="true" />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/myET"
+        android:inputType="none"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="28dp"
+        android:text="1000"
+        />
+</RelativeLayout>
