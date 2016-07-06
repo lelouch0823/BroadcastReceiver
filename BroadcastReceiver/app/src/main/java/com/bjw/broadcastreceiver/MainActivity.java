@@ -79,6 +79,8 @@ public class MainActivity extends AppCompatActivity {
             //通过ConnectivityManager的getActiveNetworkInfo方法获取网络信息NetworkInfo实例
             NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
             //判断NetworkInfo是否为空及使用isAvailable方法判断当前是否有网络连接
+
+
             if (networkInfo != null && networkInfo.isAvailable()) {
                 Logger.d("hell");
                 Toast.makeText(context, "network is available", Toast.LENGTH_SHORT).show();
