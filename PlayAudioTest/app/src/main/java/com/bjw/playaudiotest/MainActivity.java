@@ -77,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (mediaPlayer != null) {
             mediaPlayer.stop();
             mediaPlayer.release();
+
         }
     }
 }
