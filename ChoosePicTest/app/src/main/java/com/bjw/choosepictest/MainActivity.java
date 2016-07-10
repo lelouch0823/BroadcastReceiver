@@ -12,6 +12,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.orhanobut.logger.Logger;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -27,15 +29,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private android.widget.Button takephoto;
 
     private android.widget.ImageView picture;
+    private Button choosefromalbum;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        this.choosefromalbum = (Button) findViewById(R.id.choose_from_album);
         this.picture = (ImageView) findViewById(R.id.picture);
         this.takephoto = (Button) findViewById(R.id.take_photo);
         picture.setOnClickListener(this);
         takephoto.setOnClickListener(this);
+        choosefromalbum.setOnClickListener(this);
     }
 
     @Override
@@ -62,6 +67,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //启动相机
                 startActivityForResult(intent, TAKE_PHOTO);
                 break;
+            case R.id.choose_from_album:
+                //生成文件名为output_image.jpg储存在SD卡内的照片的文件对象
+                File chooseImage = new File(Environment.getExternalStorageDirectory(), "output_image.jpg");
+                //判断文件是否已经存在
+                try {
+                    if (chooseImage.exists()) {
+                        chooseImage.delete();
+                    }
+                    chooseImage.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                //获取照片的地址值
+                imagerUri = Uri.fromFile(chooseImage);
+                //为Intent添加打开相册的action
+                Intent cIntent = new Intent("android.intent.action.GET_CONTENT");
+                cIntent.setType("image/*");
+                cIntent.putExtra("crop", true);
+                cIntent.putExtra("scale", true);
+                cIntent.putExtra(MediaStore.EXTRA_OUTPUT, imagerUri);
+                Logger.d("dd");
+                startActivityForResult(cIntent,CROP_PHOTO);
+
             default:
                 break;
         }
@@ -88,6 +116,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         Bitmap bitmap = BitmapFactory.decodeStream
                                 (getContentResolver().openInputStream(imagerUri));
                         picture.setImageBitmap(bitmap);
+                        Logger.d("dd");
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
