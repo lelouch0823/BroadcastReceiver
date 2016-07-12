@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
                 values.put("pages", 1600);
                 values.put("price", 11.11);
                 db.insert("book", null, values);
-                Toast.makeText(MainActivity.this, "haha", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "insert succse", Toast.LENGTH_SHORT).show();
             }
         });
         button.setOnClickListener(new View.OnClickListener() {

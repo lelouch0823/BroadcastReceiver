@@ -24,6 +24,7 @@ public class MyDataBaseHelper extends SQLiteOpenHelper{
     public MyDataBaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
         this.mContext = context;
+
     }
 
     @Override
