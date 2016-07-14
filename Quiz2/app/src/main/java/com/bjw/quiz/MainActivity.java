@@ -117,6 +117,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 boolean answerTrue = mQuestions[mCurrentIndex].getAnswerTrue();
                 Intent intent = CheatActivity.newIntent(this, answerTrue);
                 startActivityForResult(intent,REQUEST_CODE_CHEAT);
+
                 //只要按了cheat按钮就会给当前Question对象的
                 // mIsCheat成员变量赋值为true表示这题已经偷看过了
                 mQuestions[mCurrentIndex].setCheat(true);
