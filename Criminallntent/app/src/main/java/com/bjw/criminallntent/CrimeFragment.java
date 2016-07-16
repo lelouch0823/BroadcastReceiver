@@ -1,5 +1,6 @@
 package com.bjw.criminallntent;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -86,6 +87,9 @@ public class CrimeFragment extends Fragment implements View.OnClickListener {
         mSolvedCheckBox.setOnClickListener(this);
     }
 
+    public void returnResult() {
+        getActivity().setResult(Activity.RESULT_OK,null);
+    }
     private void submit() {
         // validate
         String title = mTitleField.getText().toString().trim();
