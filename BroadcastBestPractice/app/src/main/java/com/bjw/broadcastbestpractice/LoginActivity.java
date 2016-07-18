@@ -65,7 +65,10 @@ public class LoginActivity extends AppCompatActivity {
                 Logger.d(passText);
                 if (remember.isChecked()) {
                     rememberOn = true;
-                    save(passText, accText,rememberOn);
+                    save(passText, accText, rememberOn);
+                } else {
+                    rememberOn = false;
+                    save("", "", rememberOn);
                 }
                 if ("admin".equals(accText) && "123456".equals(passText)) {
 

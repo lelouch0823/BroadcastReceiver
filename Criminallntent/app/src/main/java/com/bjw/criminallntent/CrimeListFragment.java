@@ -43,6 +43,7 @@ public class CrimeListFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CRIME) {
             if (resultCode == CrimePagerActivity.RESULT_OK) {
+                //只获得了传送过去的那个Crime的ID还需改进
                 int extra = data.getIntExtra(CrimePagerActivity.CRIME_POSTION, 0);
                 mAdapter.notifyItemChanged(extra);
             }
