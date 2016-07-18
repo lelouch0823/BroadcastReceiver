@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -63,11 +65,10 @@ public class CrimeListFragment extends Fragment {
         if (mAdapter == null) {
             //创建Adapter对象
             mAdapter = new CrimeAdapter(crimes);
+        }
             //向RecyclerView设置Adapter
             mRecyclerView.setAdapter(mAdapter);
-        } else {
 
-        }
     }
 
     private class CrimeHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -80,7 +81,9 @@ public class CrimeListFragment extends Fragment {
             //获取单个crime对象的属性并对控件进行UI刷新
             mCrime = crime;
             mTitleTextView.setText(crime.getTitle());
-            mDateTextView.setText(crime.getDate());
+            DateFormat dateFormat = new SimpleDateFormat("EE-MM-dd-yyyy");
+            String date = dateFormat.format(mCrime.getDate());
+            mDateTextView.setText(date);
             mSolvedCheckBox.setChecked(crime.isSolved());
         }
 

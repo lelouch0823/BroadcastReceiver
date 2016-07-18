@@ -22,9 +22,9 @@ public abstract class SingleFragmentActivity extends FragmentActivity {
 
         if (fragment == null) {
             fragment = createFragment();
-            manager.beginTransaction()
+        }
+        manager.beginTransaction()
                     .add(R.id.fragment_container, fragment)
                     .commit();
-        }
     }
 }

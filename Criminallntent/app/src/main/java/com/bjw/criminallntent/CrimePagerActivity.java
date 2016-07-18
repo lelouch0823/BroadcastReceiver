@@ -37,26 +37,15 @@ public class CrimePagerActivity extends FragmentActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crime_pager);
-        UUID crimeId = (UUID) getIntent().getSerializableExtra(EXTRA_CRIME_ID);
-
         initView();
-        //遍历集合获取id相同的元素的位置
-        for (int i = 0; i < mCrimes.size(); i++) {
-            if (mCrimes.get(i).getId().equals(crimeId)) {
-                //设置mViewPager显示为传递过来的crime
-                mViewPager.setCurrentItem(i);
-                Intent intent = new Intent();
-                intent.putExtra(CRIME_POSTION, i);
-                setResult(RESULT_OK,intent);
-            }
-        }
     }
 
     private void initView() {
         mViewPager = (ViewPager) findViewById(R.id.activity_crime_pager_view_pager);
 
         mCrimes = CrimeLab.get(this).getCrimes();
-        final FragmentManager manager = getSupportFragmentManager();
+
+        FragmentManager manager = getSupportFragmentManager();
         mViewPager.setAdapter(new FragmentStatePagerAdapter(manager) {
             @Override
             public Fragment getItem(int position) {
@@ -69,5 +58,17 @@ public class CrimePagerActivity extends FragmentActivity {
                 return mCrimes.size();
             }
         });
+
+        UUID crimeId = (UUID) getIntent().getSerializableExtra(EXTRA_CRIME_ID);
+        //遍历集合获取id相同的元素的位置
+        for (int i = 0; i < mCrimes.size(); i++) {
+            if (mCrimes.get(i).getId().equals(crimeId)) {
+                //设置mViewPager显示为传递过来的crime
+                mViewPager.setCurrentItem(i);
+                Intent intent = new Intent();
+                intent.putExtra(CRIME_POSTION, i);
+                setResult(RESULT_OK,intent);
+            }
+        }
     }
 }
