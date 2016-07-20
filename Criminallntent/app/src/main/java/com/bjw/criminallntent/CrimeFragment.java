@@ -46,15 +46,6 @@ public class CrimeFragment extends Fragment implements View.OnClickListener {
         mCrime = CrimeLab.get(getActivity()).getCrime(crimeId);
     }
 
-    public static CrimeFragment newInstance(UUID crimeId) {
-        Bundle args = new Bundle();
-        args.putSerializable(ARG_CRIME_ID,crimeId);
-
-        CrimeFragment fragment = new CrimeFragment();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -62,6 +53,15 @@ public class CrimeFragment extends Fragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.fragment_crime, container, false);
         initView(view);
         return view;
+    }
+
+    public static CrimeFragment newInstance(UUID crimeId) {
+        Bundle args = new Bundle();
+        args.putSerializable(ARG_CRIME_ID, crimeId);
+
+        CrimeFragment fragment = new CrimeFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 
     private void initView(View view) {
@@ -140,19 +140,19 @@ public class CrimeFragment extends Fragment implements View.OnClickListener {
                 FragmentManager manager = getFragmentManager();
                 DatePickerFragment dialog = DatePickerFragment
                         .newInstance(mCrime.getDate());
-                dialog.setTargetFragment(CrimeFragment.this,REQUEST_DATE);
-                dialog.show(manager,DIALOG_DATE);
+                dialog.setTargetFragment(CrimeFragment.this, REQUEST_DATE);
+                dialog.show(manager, DIALOG_DATE);
                 break;
             case R.id.crime_time:
                 Intent intent = TimePickerActivity
                         .newIntent(getActivity(), mCrime.getDate());
-                startActivityForResult(intent,REQUEST_TIME);
+                startActivityForResult(intent, REQUEST_TIME);
                 break;
             case R.id.crime_time2:
                 FragmentManager manager1 = getFragmentManager();
                 TimePickerDialog timePickerDialog = TimePickerDialog.newInstance(mCrime.getDate());
-                timePickerDialog.setTargetFragment(CrimeFragment.this,REQUEST_TIME);
-                timePickerDialog.show(manager1,DIALOG_TIME);
+                timePickerDialog.setTargetFragment(CrimeFragment.this, REQUEST_TIME);
+                timePickerDialog.show(manager1, DIALOG_TIME);
                 break;
             default:
                 break;
