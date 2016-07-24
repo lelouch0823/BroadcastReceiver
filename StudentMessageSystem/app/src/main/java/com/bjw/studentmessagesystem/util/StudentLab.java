@@ -30,9 +30,9 @@ public class StudentLab {
     }
 
     public static StudentLab getStudentLab(Context context) {
-        if (sStudentLab == null) {
+        //if (sStudentLab == null) {
             sStudentLab = new StudentLab(context);
-        }
+        //}
         return sStudentLab;
     }
 

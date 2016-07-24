@@ -1,9 +1,11 @@
 package com.bjw.studentmessagesystem.Fragment;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,10 +15,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bjw.studentmessagesystem.R;
-import com.bjw.studentmessagesystem.util.StudentLab;
 import com.bjw.studentmessagesystem.activity.DataControlActivity;
+import com.bjw.studentmessagesystem.db.dao.StudentDAO;
 import com.bjw.studentmessagesystem.domain.Student;
 
 import java.util.List;
@@ -33,12 +36,17 @@ import java.util.List;
 public class StudentListFragment extends Fragment {
     private RecyclerView mRecyclerView;
 
+    private StudentDAO mDao;
+
+    private List<Student> mStudents;
+
     private RecyclerView.Adapter mAdapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
     }
 
     @Override
@@ -55,15 +63,19 @@ public class StudentListFragment extends Fragment {
         mRecyclerView = (RecyclerView) view.findViewById(R.id.crime_recycler_view);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        StudentLab studentLab = StudentLab.getStudentLab(getActivity());
-        List<Student> students = studentLab.getStudents();
+        mDao = new StudentDAO(getActivity());
+        mStudents = mDao.findAll();
+        updateUi();
+        return view;
+    }
+
+    private void updateUi() {
         if (mAdapter == null) {
-            mAdapter = new StudentAdapter(students);
+            mAdapter = new StudentAdapter(mStudents);
         } else {
             mAdapter.notifyDataSetChanged();
         }
         mRecyclerView.setAdapter(mAdapter);
-        return view;
     }
 
     class StudentHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -77,9 +89,10 @@ public class StudentListFragment extends Fragment {
             mItemImage = (ImageView) itemView.findViewById(R.id.item_image);
             mDeleteImage = (ImageView) itemView.findViewById(R.id.delete_image);
             itemView.setOnClickListener(this);
+            mDeleteImage.setOnClickListener(this);
         }
 
-        public void bindStudent(Student student) {
+        public void bindStudent(Student student, final int position) {
             String name = student.getName();
             int age = student.getAge();
             String sex = student.getSex();
@@ -90,6 +103,26 @@ public class StudentListFragment extends Fragment {
             }
             mDeleteImage.setImageResource(R.drawable.ic_delete_forever_black_24dp);
             mStudent.setText("姓名:" + name +"年龄" + "性别:" + sex);
+            mDeleteImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setTitle("提醒");
+                    builder.setMessage("是否删除这条学生信息?");
+                    builder.setPositiveButton("删除", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Student student = mStudents.get(position);
+                            String name = student.getName();
+                            // 从数据库删除数据.
+                            mDao.delete(name);
+                            mStudents.remove(position);
+                            Toast.makeText(getActivity(), "数据被删除了", Toast.LENGTH_SHORT).show();
+                            updateUi();
+                        }
+                    }).show();
+                }
+            });
         }
 
         @Override
@@ -101,6 +134,7 @@ public class StudentListFragment extends Fragment {
 
     class StudentAdapter extends RecyclerView.Adapter<StudentHolder> {
         private List<Student> mStudents;
+
         @Override
         public StudentHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
@@ -115,11 +149,10 @@ public class StudentListFragment extends Fragment {
         }
 
         @Override
-        public void onBindViewHolder(StudentHolder holder, int position) {
+        public void onBindViewHolder(StudentHolder holder, final int position) {
             Student student = mStudents.get(position);
-            holder.bindStudent(student);
+            holder.bindStudent(student,position);
         }
-
         @Override
         public int getItemCount() {
             return mStudents.size();

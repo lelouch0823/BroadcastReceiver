@@ -9,16 +9,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".CrimePagerActivity"
-            android:parentActivityName=".CrimeListActivity">
+            android:name=".activity.CrimePagerActivity"
+            android:parentActivityName=".activity.CrimeListActivity">
         </activity>
-        <activity android:name=".CrimeListActivity">
+        <activity android:name=".activity.CrimeListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".TimePickerActivity"/>
+        <activity android:name=".activity.TimePickerActivity"/>
     </application>
 
 </manifest>

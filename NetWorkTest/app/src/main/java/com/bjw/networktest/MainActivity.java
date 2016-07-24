@@ -16,12 +16,13 @@ import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
     public static final int SHOW_RESPONSE = 0;
+    private static final int RESPONSE = 1;
     private android.widget.Button sendrequest;
     private android.widget.TextView responseText;
     private Handler handler = new Handler() {
         public void handleMessage(Message msg) {
             switch (msg.what) {
-                case SHOW_RESPONSE:
+                case RESPONSE:
                     String response = (String) msg.obj;
                     responseText.setText(response);
             }
@@ -51,21 +52,23 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     URL url = new URL("https://www.zhihu.com/");
                     connection = (HttpURLConnection) url.openConnection();
-                    connection.setRequestMethod("GET");
-                    connection.setConnectTimeout(8000);
+                    connection.setConnectTimeout(15000);
                     connection.setReadTimeout(8000);
-                    InputStream in = connection.getInputStream();
-                    BufferedReader reader = new BufferedReader
-                            (new InputStreamReader(in));
-                    StringBuilder response = new StringBuilder();
-                    String line;
-                    while ((line = reader.readLine()) != null) {
-                        response.append(line);
+                    int responseCode = connection.getResponseCode();
+                    if (responseCode == 200) {
+                        InputStream in = connection.getInputStream();
+                        BufferedReader reader = new BufferedReader
+                                (new InputStreamReader(in));
+                        StringBuilder response = new StringBuilder();
+                        String line;
+                        while ((line = reader.readLine()) != null) {
+                            response.append(line);
+                        }
+                        Message message = Message.obtain();
+                        message.obj = response.toString();
+                        message.what = RESPONSE;
+                        handler.sendMessage(message);
                     }
-                    Message message = new Message();
-                    message.what = SHOW_RESPONSE;
-                    message.obj = response.toString();
-                    handler.sendMessage(message);
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
@@ -77,3 +80,21 @@ public class MainActivity extends AppCompatActivity {
         }).start();
     }
 }
+/*
+    URL url = new URL("https://www.zhihu.com/");
+connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("GET");
+        connection.setConnectTimeout(8000);
+        connection.setReadTimeout(8000);
+        InputStream in = connection.getInputStream();
+        BufferedReader reader = new BufferedReader
+        (new InputStreamReader(in));
+        StringBuilder response = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) {
+        response.append(line);
+        }
+        Message message = Message.obtain();
+        message.what = SHOW_RESPONSE;
+        message.obj = response.toString();
+        handler.sendMessage(message);*/

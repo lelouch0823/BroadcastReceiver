@@ -15,7 +15,7 @@ import java.util.List;
  * Created by Administrator on 2016/7/19 0019.
  */
 public class StudentDAO {
-    private StudentDataBaseHelper mHelper;
+    private static StudentDataBaseHelper mHelper;
 
     public static final String NAME = "name";
     public static final String AGE = "age";
@@ -41,10 +41,12 @@ public class StudentDAO {
         values.put(SEX, sex);
         long insert = db.insert(TABLE_NAME, null, values);
         db.close();
+        if (insert >0)
+        System.out.println("添加成功");
         return insert;
     }
 
-    public int delete(String name) {
+    public static int delete(String name) {
         SQLiteDatabase db = mHelper.getWritableDatabase();
         int delete = db.delete(TABLE_NAME, NAME + "= ?", new String[]{name});
         return delete;

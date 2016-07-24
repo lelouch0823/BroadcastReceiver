@@ -13,10 +13,16 @@ public class Crime {
     private boolean mSolved;
 
     public Crime() {
-        mId = UUID.randomUUID();
+ //       mId = UUID.randomUUID();
 //        Date date = new Date();
 //        DateFormat dateFormat = new SimpleDateFormat("EE-MM-dd-yyyy");
 //        mDate = dateFormat.format(date);
+//        mDate = new Date();
+        this(UUID.randomUUID());
+    }
+
+    public Crime(UUID id) {
+        mId = id;
         mDate = new Date();
     }
 

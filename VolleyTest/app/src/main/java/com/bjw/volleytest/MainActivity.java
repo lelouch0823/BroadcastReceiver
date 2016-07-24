@@ -18,6 +18,9 @@ import com.orhanobut.logger.Logger;
 
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 public class MainActivity extends AppCompatActivity {
     String text = null;
     private TextView mResponseText;
@@ -35,13 +38,14 @@ public class MainActivity extends AppCompatActivity {
     private void initView() {
         mResponseText = (TextView) findViewById(R.id.response_text);
         //getText();
-        //getJason();
+        getJason();
         //setImage();
-        setImageLoader();
+        //setImageLoader();
     }
 
     private void setImageLoader() {
         RequestQueue requestQueue = Volley.newRequestQueue(this);
+
         ImageLoader imageLoader = new ImageLoader(requestQueue, new ImageLoader.ImageCache() {
             @Override
             public Bitmap getBitmap(String url) {
@@ -79,19 +83,25 @@ public class MainActivity extends AppCompatActivity {
 
     private void getJason() {
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
-                ("http://v.juhe.cn/weather/index?cityname=hangzhou&key=***a7558b2e0bedaa19673f74a6809ce",
-                        null, new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Logger.d(response.toString());
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Logger.e(error.getMessage());
-                    }
-                });
+        JsonObjectRequest jsonObjectRequest = null;
+        try {
+            jsonObjectRequest = new JsonObjectRequest
+                    ("http://wthrcdn.etouch.cn/weather_mini?city="+ URLEncoder.encode("杭州","utf-8"),
+                            null, new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            mResponseText.setText(response.toString());
+                            Logger.d(response.toString());
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Logger.e(error.getMessage());
+                        }
+                    });
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         requestQueue.add(jsonObjectRequest);
     }
 
