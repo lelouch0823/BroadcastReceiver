@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.bjw.criminallntent.Crime;
@@ -60,6 +61,7 @@ public class CrimeListFragment extends Fragment {
         UpdateUI();
         return view;
     }
+
 
     @Override
     public void onResume() {
@@ -165,6 +167,13 @@ public class CrimeListFragment extends Fragment {
             String date = dateFormat.format(mCrime.getDate());
             mDateTextView.setText(date);
             mSolvedCheckBox.setChecked(crime.isSolved());
+            mSolvedCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    mCrime.setSolved(b);
+                    CrimeLab.get(getActivity()).updateCrime(mCrime);
+                }
+            });
         }
 
         public CrimeHolder(View itemView) {

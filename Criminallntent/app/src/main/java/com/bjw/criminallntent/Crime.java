@@ -30,6 +30,10 @@ public class Crime {
         this(UUID.randomUUID());
     }
 
+    public String getPhotoFilename() {
+        return "IMG_" + getId().toString() + ".jpg";
+    }
+
     public Crime(UUID id) {
         mId = id;
         mDate = new Date();
