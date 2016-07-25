@@ -61,6 +61,7 @@ public class DatePickerFragment extends DialogFragment {
                         int day = mDatePicker.getDayOfMonth();
                         Date date = new GregorianCalendar(year, month, day).getTime();
                         sendResult(Activity.RESULT_OK,date);
+
                     }
                 })
                 .create();
@@ -70,6 +71,7 @@ public class DatePickerFragment extends DialogFragment {
         if (getTargetFragment() == null) {
             return;
         }
+
         Intent intent = new Intent();
         intent.putExtra(EXTRA_DATE, date);
         getTargetFragment()

@@ -2,6 +2,9 @@ package com.bjw.criminallntent.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
@@ -46,6 +49,7 @@ public class CrimeFragment extends Fragment implements View.OnClickListener {
     private static final String DIALOG_TIME = "DialogTime";
     private static final int REQUEST_DATE = 0;
     private static final int REQUEST_TIME = 1;
+    private Intent mPickContact;
     private Button mCrimeSuspect;
     private Button mCrimeReport;
 
@@ -138,6 +142,16 @@ public class CrimeFragment extends Fragment implements View.OnClickListener {
         mSolvedCheckBox.setChecked(mCrime.isSolved());
         mSolvedCheckBox.setOnClickListener(this);
         mCrimeSuspect = (Button) view.findViewById(R.id.crime_suspect);
+        PackageManager packageManager = getActivity()
+                .getPackageManager();
+        mPickContact = new Intent(Intent.ACTION_PICK,
+                ContactsContract.Contacts.CONTENT_URI);
+        //验证过滤器是否有效
+//        mPickContact.addCategory(Intent.CATEGORY_HOME);
+        if (packageManager.resolveActivity(mPickContact,
+                PackageManager.MATCH_DEFAULT_ONLY) == null) {
+            mCrimeSuspect.setEnabled(false);
+        }
         mCrimeSuspect.setOnClickListener(this);
         if (mCrime.getSuspect() != null) {
             mCrimeSuspect.setText(mCrime.getSuspect());
@@ -169,7 +183,22 @@ public class CrimeFragment extends Fragment implements View.OnClickListener {
         } else if (requestCode == REQUEST_TIME) {
 
         } else if (requestCode == REQUEST_CONTACT) {
+            Uri contactUri = data.getData();
+            String[] queryFields = new String[]{ContactsContract.Contacts.DISPLAY_NAME};
+            Cursor cursor = getActivity().getContentResolver()
+                    .query(contactUri, queryFields, null, null, null);
+            try {
+                if (cursor.getCount() == 0) {
+                    return;
+                }
+                cursor.moveToFirst();
+                String suspect = cursor.getString(0);
+                mCrime.setSuspect(suspect);
+                mCrimeSuspect.setText(suspect);
+            } finally {
+                cursor.close();
 
+            }
         }
     }
 
@@ -201,9 +230,7 @@ public class CrimeFragment extends Fragment implements View.OnClickListener {
                 timePickerDialog.show(manager1, DIALOG_TIME);
                 break;
             case R.id.crime_suspect:
-                Intent pickContact = new Intent(Intent.ACTION_PICK,
-                        ContactsContract.Contacts.CONTENT_URI);
-                startActivityForResult(pickContact,REQUEST_CONTACT);
+                startActivityForResult(mPickContact, REQUEST_CONTACT);
                 break;
             case R.id.crime_report:
                 Intent reportIntent = new Intent(Intent.ACTION_SEND);
