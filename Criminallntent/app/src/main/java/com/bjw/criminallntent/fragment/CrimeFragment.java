@@ -3,12 +3,14 @@ package com.bjw.criminallntent.fragment;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,8 +27,6 @@ import com.bjw.criminallntent.activity.TimePickerActivity;
 import com.bjw.criminallntent.fragment.dialog.DatePickerFragment;
 import com.bjw.criminallntent.fragment.dialog.TimePickerDialog;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 
@@ -34,6 +34,7 @@ import java.util.UUID;
  * Created by Administrator on 2016/7/15 0015.
  */
 public class CrimeFragment extends Fragment implements View.OnClickListener {
+    private static final int REQUEST_CONTACT = 2;
     private Crime mCrime;
     private EditText mTitleField;
     private Button mDateButton;
@@ -45,6 +46,8 @@ public class CrimeFragment extends Fragment implements View.OnClickListener {
     private static final String DIALOG_TIME = "DialogTime";
     private static final int REQUEST_DATE = 0;
     private static final int REQUEST_TIME = 1;
+    private Button mCrimeSuspect;
+    private Button mCrimeReport;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,6 +69,27 @@ public class CrimeFragment extends Fragment implements View.OnClickListener {
     public void onPause() {
         super.onPause();
         CrimeLab.get(getActivity()).updateCrime(mCrime);
+    }
+
+    private String getCrimeReport() {
+        String solvedString = null;
+        if (mCrime.isSolved()) {
+            solvedString = getString(R.string.crime_report_solved);
+        } else {
+            solvedString = getString(R.string.crime_report_unsolved);
+        }
+        String dateFormat = "EE, MMM dd";
+        String dateString = DateFormat.format(dateFormat, mCrime.getDate()).toString();
+
+        String suspect = mCrime.getSuspect();
+        if (suspect == null) {
+            suspect = getString(R.string.crime_report_no_suspect);
+        } else {
+            suspect = getString(R.string.crime_report_suspect, suspect);
+        }
+        String report = getString(R.string.crime_report,
+                mCrime.getTitle(), dateString, solvedString, suspect);
+        return report;
     }
 
     public static CrimeFragment newInstance(UUID crimeId) {
@@ -113,6 +137,13 @@ public class CrimeFragment extends Fragment implements View.OnClickListener {
         });
         mSolvedCheckBox.setChecked(mCrime.isSolved());
         mSolvedCheckBox.setOnClickListener(this);
+        mCrimeSuspect = (Button) view.findViewById(R.id.crime_suspect);
+        mCrimeSuspect.setOnClickListener(this);
+        if (mCrime.getSuspect() != null) {
+            mCrimeSuspect.setText(mCrime.getSuspect());
+        }
+        mCrimeReport = (Button) view.findViewById(R.id.crime_report);
+        mCrimeReport.setOnClickListener(this);
     }
 
     private void submit() {
@@ -137,13 +168,15 @@ public class CrimeFragment extends Fragment implements View.OnClickListener {
             mDateButton.setText(updateDate());
         } else if (requestCode == REQUEST_TIME) {
 
+        } else if (requestCode == REQUEST_CONTACT) {
+
         }
     }
 
     private String updateDate() {
-        DateFormat dateFormat = new SimpleDateFormat("EE-MM-dd-yyyy");
-        String stringDate = dateFormat.format(mCrime.getDate());
-        return stringDate;
+        String dateFormat = "EE, MMM dd";
+        String dateString = DateFormat.format(dateFormat, mCrime.getDate()).toString();
+        return dateString;
     }
 
     @Override
@@ -166,6 +199,20 @@ public class CrimeFragment extends Fragment implements View.OnClickListener {
                 TimePickerDialog timePickerDialog = TimePickerDialog.newInstance(mCrime.getDate());
                 timePickerDialog.setTargetFragment(CrimeFragment.this, REQUEST_TIME);
                 timePickerDialog.show(manager1, DIALOG_TIME);
+                break;
+            case R.id.crime_suspect:
+                Intent pickContact = new Intent(Intent.ACTION_PICK,
+                        ContactsContract.Contacts.CONTENT_URI);
+                startActivityForResult(pickContact,REQUEST_CONTACT);
+                break;
+            case R.id.crime_report:
+                Intent reportIntent = new Intent(Intent.ACTION_SEND);
+                reportIntent.setType("text/plain");
+                reportIntent.putExtra(Intent.EXTRA_TEXT, getCrimeReport());
+                reportIntent.putExtra(Intent.EXTRA_SUBJECT,
+                        getString(R.string.crime_repoty_subject));
+                reportIntent = Intent.createChooser(reportIntent, getString(R.string.send_report));
+                startActivity(reportIntent);
                 break;
             default:
                 break;
