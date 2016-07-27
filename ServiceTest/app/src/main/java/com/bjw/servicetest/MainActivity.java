@@ -62,8 +62,8 @@ public class MainActivity extends AppCompatActivity {
                 stopService(stopintent);
                 break;
             case R.id.bind_service:
-                Intent bindintent = new Intent(MainActivity.this, Myservice.class);
-                bindService(bindintent, connection, BIND_AUTO_CREATE);
+                    Intent bindintent = new Intent(MainActivity.this, Myservice.class);
+                    bindService(bindintent, connection, BIND_AUTO_CREATE);
                 break;
             case R.id.unbind_service:
                 Intent unbindintent = new Intent(MainActivity.this, Myservice.class);
