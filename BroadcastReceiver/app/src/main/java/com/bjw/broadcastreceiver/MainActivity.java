@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         intentFilter = new IntentFilter();
         //向IntentFilter中添加要接收的广播类型:网路变化
         intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
-        //创建广播实例
+        //创建自定义广播实例
         networkChangeReceiver = new NetworkChangeReceiver();
         //使用Activity注册广播
         registerReceiver(networkChangeReceiver, intentFilter);
@@ -78,9 +78,8 @@ public class MainActivity extends AppCompatActivity {
             ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
             //通过ConnectivityManager的getActiveNetworkInfo方法获取网络信息NetworkInfo实例
             NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+
             //判断NetworkInfo是否为空及使用isAvailable方法判断当前是否有网络连接
-
-
             if (networkInfo != null && networkInfo.isAvailable()) {
                 Logger.d("hell");
                 Toast.makeText(context, "network is available", Toast.LENGTH_SHORT).show();

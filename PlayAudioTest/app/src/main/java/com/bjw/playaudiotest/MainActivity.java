@@ -6,6 +6,7 @@ import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.orhanobut.logger.Logger;
 
@@ -26,6 +27,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button stop;
 
     private MediaPlayer mediaPlayer = new MediaPlayer();
+    private File mMusicFile;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,8 +39,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void initMediaPlayer() {
         try {
-            File file = new File(Environment.getExternalStorageDirectory(), "hah.mp3");
-            mediaPlayer.setDataSource(file.getPath());
+            mMusicFile= new File(Environment.getExternalStorageDirectory(), "hah.mp3");
+            mediaPlayer.setDataSource(mMusicFile.getPath());
             mediaPlayer.prepare();
         } catch (IOException e) {
             e.printStackTrace();
@@ -47,6 +50,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @OnClick({R.id.play, R.id.pause, R.id.stop})
     public void onClick(View view) {
+        if (!mMusicFile.exists()) {
+            Toast.makeText(this, "文件不存在", Toast.LENGTH_SHORT).show();
+            return;
+        }
         switch (view.getId()) {
             case R.id.play:
                 if (!mediaPlayer.isPlaying()) {
