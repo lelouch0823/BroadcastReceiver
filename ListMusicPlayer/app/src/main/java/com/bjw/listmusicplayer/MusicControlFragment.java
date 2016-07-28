@@ -35,7 +35,7 @@ public class MusicControlFragment extends Fragment implements View.OnClickListen
     private File mMusicFolder;
     private ImageButton mBtListMusic;
     //private File mMusic;
-    private int mPostion;
+    public static int  mPostion;
     private Intent mServiceIntent;
     public static List<File> sFiles;
     private int mIsplaying;
@@ -49,6 +49,7 @@ public class MusicControlFragment extends Fragment implements View.OnClickListen
         mIsplaying = 1;
         return view;
     }
+
 
     private void initView(View view) {
         mEtFilePath = (EditText) view.findViewById(R.id.et_file_path);

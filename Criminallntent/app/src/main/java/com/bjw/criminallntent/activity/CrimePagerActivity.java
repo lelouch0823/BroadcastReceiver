@@ -11,9 +11,9 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
 import com.bjw.criminallntent.Crime;
-import com.bjw.criminallntent.fragment.CrimeFragment;
 import com.bjw.criminallntent.CrimeLab;
 import com.bjw.criminallntent.R;
+import com.bjw.criminallntent.fragment.CrimeFragment;
 
 import java.util.List;
 import java.util.UUID;
@@ -21,7 +21,7 @@ import java.util.UUID;
 /**
  * Created by Administrator on 2016/7/16 0016.
  */
-public class CrimePagerActivity extends AppCompatActivity {
+public class CrimePagerActivity extends AppCompatActivity implements CrimeFragment.Callbacks{
 
     private ViewPager mViewPager;
     private List<Crime> mCrimes;
@@ -75,5 +75,10 @@ public class CrimePagerActivity extends AppCompatActivity {
                 setResult(RESULT_OK,intent);
             }
         }
+    }
+
+    @Override
+    public void onCrimeUpdated(Crime crime) {
+
     }
 }

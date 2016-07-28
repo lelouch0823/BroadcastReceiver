@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.IBinder;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.widget.Toast;
 
@@ -20,9 +21,10 @@ import java.util.List;
 public class MusicService extends Service {
     private static final String PLAY_ACTION = "the action";
     private static final String MUSIC_POSTION = "this is the music";
+    private static final int UPDATE_UI = 0;
     private MediaPlayer mMediaPlayer;
-    public static String mPath;
-    public static List<File> sMusices;
+    public  String mPath;
+    public  List<File> sMusices;
     private File mMusic;
     private int mPostion;
 
@@ -110,25 +112,36 @@ public class MusicService extends Service {
             mMediaPlayer.setDataSource(mMusic
                     .getAbsolutePath());
             mMediaPlayer.setLooping(false);
-/*            mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+           mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
-                public void onCompletion(MediaPlayer mediaPlayer) {
+                public void onCompletion(final MediaPlayer mediaPlayer) {
                     try {
+                        mediaPlayer.reset();
                         if (mPostion == sMusices.size() - 1) {
-                            Toast.makeText(MusicService.this, "本歌曲播放完毕," +
+                            Toast.makeText(MusicService.this, "全部歌曲播放完毕," +
                                     "已经没有下一首歌曲: " + mMusic.getName(), Toast.LENGTH_SHORT).show();
                             return;
                         }
                         Toast.makeText(MusicService.this, "本歌曲播放完毕," +
                                 "开始播放下一首歌: " + mMusic.getName(), Toast.LENGTH_SHORT).show();
                         mPostion = mPostion + 1;
+                        MusicControlFragment.mPostion = mPostion;
                         mediaPlayer.setDataSource(sMusices.get(mPostion).getAbsolutePath());
                         mediaPlayer.prepare();
+                        mediaPlayer.start();
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Message message = Message.obtain();
+                                message.what = UPDATE_UI;
+                                message.obj = mPostion;
+                            }
+                        }).start();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
-            });*/
+            });
             mMediaPlayer.prepare();
         } catch (Exception e) {
             e.printStackTrace();

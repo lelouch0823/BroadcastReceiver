@@ -1,5 +1,6 @@
 package com.bjw.criminallntent.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -37,6 +38,12 @@ public class CrimeListFragment extends Fragment {
     private static final String SAVED_SUBTITLE_VISIBLE = "subtitle";
     private boolean mSubtitleVisible;
 
+    private Callbacks mCallbacks;
+
+    public interface Callbacks {
+        void onCrimeSelected(Crime crime);
+    }
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,7 +65,7 @@ public class CrimeListFragment extends Fragment {
             mSubtitleVisible = savedInstanceState.getBoolean(SAVED_SUBTITLE_VISIBLE);
         }
         //调用方法创建视图
-        UpdateUI();
+        updateUI();
         return view;
     }
 
@@ -67,7 +74,7 @@ public class CrimeListFragment extends Fragment {
     public void onResume() {
         super.onResume();
         //在回到栈顶显示时刷新视图
-        UpdateUI();
+        updateUI();
     }
 
     @Override
@@ -77,13 +84,35 @@ public class CrimeListFragment extends Fragment {
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mCallbacks = (Callbacks) context;
+    }
+
+/*
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        mCallbacks = (Callbacks) activity;
+    }
+*/
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mCallbacks = null;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_item_new_crime:
                 Crime crime = new Crime();
                 CrimeLab.get(getActivity()).addCrime(crime);
-                Intent intent = CrimePagerActivity.newIntent(getActivity(), crime.getId());
-                startActivity(intent);
+                /*Intent intent = CrimePagerActivity.newIntent(getActivity(), crime.getId());
+                startActivity(intent);*/
+                updateUI();
+                mCallbacks.onCrimeSelected(crime);
                 return true;
             case R.id.menu_item_show_subtitle:
                 //在显示与不显示子标题直接切换
@@ -135,7 +164,7 @@ public class CrimeListFragment extends Fragment {
     }
 
     //初始化视图
-    private void UpdateUI() {
+    public void updateUI() {
         //获取CrimeLab对象
         CrimeLab crimeLab = CrimeLab.get(getActivity());
         //获取Crime对象集合
@@ -172,6 +201,7 @@ public class CrimeListFragment extends Fragment {
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                     mCrime.setSolved(b);
                     CrimeLab.get(getActivity()).updateCrime(mCrime);
+                    mCallbacks.onCrimeSelected(mCrime);
                 }
             });
         }
@@ -188,13 +218,8 @@ public class CrimeListFragment extends Fragment {
         @Override
         public void onClick(View view) {
             //设置点击事件
-            Intent intent = CrimePagerActivity.newIntent(getActivity(), mCrime.getId());
-            //startActivity(intent);
-            startActivityForResult(intent,REQUEST_CRIME);
+            mCallbacks.onCrimeSelected(mCrime);
         }
-
-
-
     }
 
     private class CrimeAdapter extends RecyclerView.Adapter<CrimeHolder> {

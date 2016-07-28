@@ -53,6 +53,7 @@ public class MusicListFragment extends Fragment {
                 public void onClick(View view) {
                     Intent intent = MusicControlFragment.newIntent(getActivity(),mPosition);
                     startActivity(intent);
+                    getActivity().finish();
                 }
             });
         }

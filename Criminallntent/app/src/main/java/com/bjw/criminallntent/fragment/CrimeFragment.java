@@ -1,6 +1,7 @@
 package com.bjw.criminallntent.fragment;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -64,6 +65,24 @@ public class CrimeFragment extends Fragment implements View.OnClickListener {
     private ImageView mPhotoView;
     private ImageButton mPhotoButton;
     private File mPhotoFile;
+    private Callbacks mCallbacks;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mCallbacks = (Callbacks) context;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mCallbacks = null;
+    }
+
+    private void updateCrime() {
+        CrimeLab.get(getActivity()).updateCrime(mCrime);
+        mCallbacks.onCrimeUpdated(mCrime);
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,6 +91,11 @@ public class CrimeFragment extends Fragment implements View.OnClickListener {
         mCrime = CrimeLab.get(getActivity()).getCrime(crimeId);
         mPhotoFile = CrimeLab.get(getActivity()).getPhotoFile(mCrime);
     }
+
+    public interface Callbacks {
+        void onCrimeUpdated(Crime crime);
+    }
+
 
     @Nullable
     @Override
@@ -118,7 +142,7 @@ public class CrimeFragment extends Fragment implements View.OnClickListener {
         return fragment;
     }
 
-    private void initView(View view) {
+    public void initView(View view) {
         mTitleField = (EditText) view.findViewById(R.id.crime_title);
         mTitleField.addTextChangedListener(new TextWatcher() {
             @Override
@@ -129,6 +153,7 @@ public class CrimeFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 mCrime.setTitle(charSequence.toString().trim());
+                updateCrime();
             }
 
             @Override
@@ -150,6 +175,7 @@ public class CrimeFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 mCrime.setSolved(isChecked);
+                updateCrime();
             }
         });
         mSolvedCheckBox.setChecked(mCrime.isSolved());
@@ -208,9 +234,10 @@ public class CrimeFragment extends Fragment implements View.OnClickListener {
             Date date = (Date) data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
             mCrime.setDate(date);
             mDateButton.setText(updateDate());
+            updateCrime();
         } else if (requestCode == REQUEST_TIME) {
 
-        } else if (requestCode == REQUEST_CONTACT) {
+        } else if (requestCode == REQUEST_CONTACT && data != null) {
             Uri contactUri = data.getData();
             String[] queryFields = new String[]{ContactsContract.Contacts.DISPLAY_NAME};
             Cursor cursor = getActivity().getContentResolver()
@@ -222,11 +249,13 @@ public class CrimeFragment extends Fragment implements View.OnClickListener {
                 cursor.moveToFirst();
                 String suspect = cursor.getString(0);
                 mCrime.setSuspect(suspect);
+                updateCrime();
                 mCrimeSuspect.setText(suspect);
             } finally {
                 cursor.close();
             }
         } else if (resultCode == REQUEST_PHOTO) {
+            updateCrime();
             updatePhotoView();
         }
     }

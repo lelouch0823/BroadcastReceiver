@@ -7,12 +7,15 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.orhanobut.logger.Logger;
+
 public class MyService extends Service {
 
     private DownloadBinder mBinder = new DownloadBinder();
 
     class DownloadBinder extends Binder {
         public void startDownload () {
+            Logger.d("开始下载");
         }
         public int getProgress () {
             return 0;
