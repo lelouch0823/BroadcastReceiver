@@ -1,5 +1,6 @@
 package com.bjw.providertest;
 
+import android.app.Notification;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
@@ -29,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
         updatedata.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Notification notification = new Notification()
                 Uri uri = Uri.parse("content://com.bjw.databasetest.provider/book/" + newId);
                 ContentValues values = new ContentValues();
                 values.put("name","你好好");

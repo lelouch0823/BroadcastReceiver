@@ -14,7 +14,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
@@ -26,7 +25,6 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.bjw.criminallntent.Crime;
 import com.bjw.criminallntent.CrimeLab;
@@ -74,28 +72,12 @@ public class CrimeFragment extends Fragment implements View.OnClickListener {
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-        mCallbacks = null;
-    }
-
-    private void updateCrime() {
-        CrimeLab.get(getActivity()).updateCrime(mCrime);
-        mCallbacks.onCrimeUpdated(mCrime);
-    }
-
-    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         UUID crimeId = (UUID) getArguments().getSerializable(ARG_CRIME_ID);
         mCrime = CrimeLab.get(getActivity()).getCrime(crimeId);
         mPhotoFile = CrimeLab.get(getActivity()).getPhotoFile(mCrime);
     }
-
-    public interface Callbacks {
-        void onCrimeUpdated(Crime crime);
-    }
-
 
     @Nullable
     @Override
@@ -111,6 +93,22 @@ public class CrimeFragment extends Fragment implements View.OnClickListener {
         super.onPause();
         CrimeLab.get(getActivity()).updateCrime(mCrime);
     }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mCallbacks = null;
+    }
+
+    private void updateCrime() {
+        CrimeLab.get(getActivity()).updateCrime(mCrime);
+        mCallbacks.onCrimeUpdated(mCrime);
+    }
+
+    public interface Callbacks {
+        void onCrimeUpdated(Crime crime);
+    }
+
 
     private String getCrimeReport() {
         String solvedString = null;
@@ -214,16 +212,14 @@ public class CrimeFragment extends Fragment implements View.OnClickListener {
         mPhotoButton.setOnClickListener(this);
     }
 
-    private void submit() {
+/*    private void submit() {
         // validate
         String title = mTitleField.getText().toString().trim();
         if (TextUtils.isEmpty(title)) {
             Toast.makeText(getContext(), "title不能为空", Toast.LENGTH_SHORT).show();
             return;
         }
-
-
-    }
+    }*/
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -257,6 +253,7 @@ public class CrimeFragment extends Fragment implements View.OnClickListener {
         } else if (resultCode == REQUEST_PHOTO) {
             updateCrime();
             updatePhotoView();
+
         }
     }
 

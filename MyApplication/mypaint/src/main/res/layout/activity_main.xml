@@ -1,0 +1,66 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              tools:context=".MainActivity" >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="请选择画笔的颜色" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <View
+            android:id="@+id/red"
+            android:layout_width="35dip"
+            android:layout_height="35dip"
+            android:background="#ff0000" />
+
+        <View
+            android:id="@+id/green"
+            android:layout_width="35dip"
+            android:layout_height="35dip"
+            android:background="#00ff00" />
+
+        <View
+            android:id="@+id/blue"
+            android:layout_width="35dip"
+            android:layout_height="35dip"
+            android:background="#0000ff" />
+
+        <View
+            android:id="@+id/yellow"
+            android:layout_width="35dip"
+            android:layout_height="35dip"
+            android:background="#ffff00" />
+
+        <View
+            android:id="@+id/purple"
+            android:layout_width="35dip"
+            android:layout_height="35dip"
+            android:background="#ff00ff" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="请设置画笔的粗细" />
+
+    <SeekBar
+        android:id="@+id/seekbar"
+        android:max="20"
+        android:progress="5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <ImageView
+        android:id="@+id/iv"
+        android:layout_width="320dip"
+        android:layout_height="320dip" />
+
+</LinearLayout>
