@@ -9,7 +9,7 @@
         <item name="android:colorBackground">@color/soothing</item>
         <item name="android:buttonStyle">@style/BeatBoxButton</item>
     </style>
-    <style name="BeatBoxButton" parent="android:style/Widget.Holo.Button">
+    <style name="BeatBoxButton" parent="android:style/Widget.Material.Button">
         <item name="android:background">
             @drawable/button_beat_box
         </item>
