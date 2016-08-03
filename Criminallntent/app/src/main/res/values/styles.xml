@@ -5,9 +5,4 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="BeatBoxButton">
-        <item name="android:background">
-            @color/dark_blue
-        </item>
-    </style>
 </resources>
