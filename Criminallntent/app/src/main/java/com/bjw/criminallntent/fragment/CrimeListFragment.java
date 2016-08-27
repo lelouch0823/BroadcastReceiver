@@ -80,7 +80,7 @@ public class CrimeListFragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putBoolean(SAVED_SUBTITLE_VISIBLE,mSubtitleVisible);
+        outState.putBoolean(SAVED_SUBTITLE_VISIBLE, mSubtitleVisible);
     }
 
     @Override
@@ -128,7 +128,7 @@ public class CrimeListFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.fragment_crime_list,menu);
+        inflater.inflate(R.menu.fragment_crime_list, menu);
 
         //关联菜单资源文件
         MenuItem subtitleItem = menu.findItem(R.id.menu_item_show_subtitle);
@@ -173,12 +173,12 @@ public class CrimeListFragment extends Fragment {
         if (mAdapter == null) {
             //创建Adapter对象
             mAdapter = new CrimeAdapter(crimes);
+            mRecyclerView.setAdapter(mAdapter);
         } else {
             mAdapter.setCrimes(crimes);
             mAdapter.notifyDataSetChanged();
         }
         //向RecyclerView设置Adapter
-        mRecyclerView.setAdapter(mAdapter);
         updateSubtitle();
     }
 
@@ -228,15 +228,17 @@ public class CrimeListFragment extends Fragment {
         public void setCrimes(List<Crime> crimes) {
             mCrimes = crimes;
         }
-        public CrimeAdapter (List<Crime> crimes) {
+
+        public CrimeAdapter(List<Crime> crimes) {
             //将创建CrimeAdapter对象是传入的list赋值给成员变量
             mCrimes = crimes;
         }
+
         @Override
         public CrimeHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             //加载布局
             LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
-            View view = layoutInflater.inflate(R.layout.list_item_crime,parent,false);
+            View view = layoutInflater.inflate(R.layout.list_item_crime, parent, false);
             //创建ViewHolder
             return new CrimeHolder(view);
         }

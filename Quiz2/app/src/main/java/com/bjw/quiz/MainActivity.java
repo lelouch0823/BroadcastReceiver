@@ -69,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         updateQuestion();
     }
 
+
     private void initView() {
         mText = (TextView) findViewById(R.id.text);
         mLeft = (Button) findViewById(R.id.left);

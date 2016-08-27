@@ -33,6 +33,7 @@ import com.bjw.criminallntent.R;
 import com.bjw.criminallntent.activity.TimePickerActivity;
 import com.bjw.criminallntent.fragment.dialog.DatePickerFragment;
 import com.bjw.criminallntent.fragment.dialog.TimePickerDialog;
+import com.orhanobut.logger.Logger;
 
 import java.io.File;
 import java.util.Date;
@@ -238,6 +239,19 @@ public class CrimeFragment extends Fragment implements View.OnClickListener {
             String[] queryFields = new String[]{ContactsContract.Contacts.DISPLAY_NAME};
             Cursor cursor = getActivity().getContentResolver()
                     .query(contactUri, queryFields, null, null, null);
+            String contactId = cursor.getString(1);
+            Cursor phones=
+                    getActivity().getContentResolver()
+                            .query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                            null,ContactsContract.CommonDataKinds.Phone.CONTACT_ID +" = "+ contactId,null, null);
+            while (phones.moveToNext())
+            {
+                String phoneNumber = phones.getString
+                        (phones.getColumnIndex
+                                (ContactsContract.CommonDataKinds.Phone.NUMBER));
+                Logger.e(phoneNumber);
+            }
+            phones.close();
             try {
                 if (cursor.getCount() == 0) {
                     return;

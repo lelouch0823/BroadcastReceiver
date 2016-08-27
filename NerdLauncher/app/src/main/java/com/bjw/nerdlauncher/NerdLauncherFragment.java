@@ -30,7 +30,8 @@ public class NerdLauncherFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_nerd_launcher,container,false);
          mRecyclerView = (RecyclerView) view.findViewById
                  (R.id.fragment_nerd_launcher_recycler_view);

@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
             //mIBinder = (MyService.DownloadBinder) iBinder;
             mInterface = MyAidlInterface.Stub.asInterface(iBinder);
+
         }
 
         @Override
