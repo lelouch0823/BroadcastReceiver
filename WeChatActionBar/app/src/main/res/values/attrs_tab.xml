@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="WeChatTab">
+        <attr name="icon" format="reference"/>
+        <attr name="bottom_text" format="string"/>
+        <attr name="text_size" format="dimension"/>
+        <attr name="view_color" format="color"/>
+    </declare-styleable>
+</resources>

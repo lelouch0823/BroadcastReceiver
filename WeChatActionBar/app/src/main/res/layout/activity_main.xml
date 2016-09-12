@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bjw="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    tools:context="com.bjw.wechatactionbar.MainActivity">
+
+    <android.support.v4.view.ViewPager
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+
+        <com.bjw.wechatactionbar.WeChatTab
+            android:id="@+id/wct_bottom_one"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:padding="6dp"
+            bjw:text_size="12dp"
+            bjw:view_color="#ff45c01a"
+            bjw:bottom_text="聊天"
+            bjw:icon="@drawable/ic_feedback_white_18dp"/>
+
+        <com.bjw.wechatactionbar.WeChatTab
+            android:id="@+id/wct_bottom_twp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:padding="6dp"
+            bjw:text_size="12dp"
+            bjw:view_color="#ff45c01a"
+            bjw:bottom_text="聊天"
+            bjw:icon="@drawable/ic_grade_white_18dp"/>
+
+        <com.bjw.wechatactionbar.WeChatTab
+            android:id="@+id/wct_bottom_three"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:padding="6dp"
+            bjw:text_size="12dp"
+            bjw:view_color="#ff45c01a"
+            bjw:bottom_text="聊天"
+            bjw:icon="@drawable/ic_explore_white_18dp"/>
+    <com.bjw.wechatactionbar.WeChatTab
+        android:id="@+id/wct_bottom_four"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:padding="6dp"
+        bjw:text_size="12dp"
+        bjw:view_color="#ff45c01a"
+        bjw:bottom_text="聊天"
+        bjw:icon="@drawable/ic_account_circle_white_18dp"/>
+    </LinearLayout>
+</LinearLayout>
